@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,6 +21,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveBase m_driveBase = new DriveBase();
+  private final Claw m_claw = new Claw();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -48,6 +50,11 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    // trigger example command when 'A' button is pressed
+    // trigger scoreAmp command 'B' is pressed 
+    // trigger intakeClaw command 'X' is pressed
+    // if 'B' and 'X' are not pressed, trigger defaultClaw command
   }
 
   /**

@@ -46,4 +46,17 @@ public final class Constants {
     // Climber Motor Ids
     public static final int kClimbMotorId = 40;
   }
+  public final class clawConstants{
+
+    /*Claw motor speeds*/
+
+    // Claw motor forward speed
+    public static final double kClawForwardSpeed = 0.5;
+
+    // Claw motor backward speed
+    public static final double kClawBackwardSpeed = -0.5;
+
+    // Claw idle speed 
+    public static final double kClawIdleSpeed = -0.1;
+  }
 }
