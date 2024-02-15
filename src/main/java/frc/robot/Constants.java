@@ -45,7 +45,8 @@ public final class Constants {
     /* Climber Subsystem Device Ids */
 
     // Climber Motor Ids
-    public static final int kClimbMotorId = 40;}
+    public static final int kClimbMotorId = 40;
+  }
 
     public final class ShooterConstants {
     /*  Shooter Constants */
@@ -53,7 +54,6 @@ public final class Constants {
     //  Edit at Mentors Discretion
 
     // Set default shooter constant
-    /*  Doesn't seem to work */
     public static final double kDefaultSpeed = 0;
 
    //  Set Shoot Constant
@@ -61,6 +61,15 @@ public final class Constants {
 
     //  Set intake Constant
     public static final double kShooterIntake = -0.2;
+  }
+  public final class ClimbConstants {
+    /*  Climber Constants */
+    //  Edit based on climb mechanisms functionality
 
+    //  Set Climbing Upwards Constant
+    public static final double kClimbUpSpeed = 0.5;
+
+    //  Set Climbing Down Constant
+    public static final double kClimbDownSpeed = -0.5;
   }
 }

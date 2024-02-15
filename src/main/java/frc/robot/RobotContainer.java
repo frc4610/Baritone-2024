@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +23,7 @@ public class RobotContainer {
   // Declare robot subsystems here
   private final DriveBase m_driveBase = new DriveBase();
   private final Shooter m_Shooter = new Shooter();
+  private final Climber m_Climber = new Climber();
 
 
   // Declare driver controller 
@@ -56,11 +58,17 @@ public class RobotContainer {
     *m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     */
 
-    /*  if the bumper is activated then do the command */
+    /*  if the 'a' button is activated then do the command */
+      m_operatorController.button(3).whileTrue(m_Climber.raiseClimber());
+
+      /*  if the 'b' button is activated then do the command */
+     m_operatorController.button(4).whileTrue(m_Climber.lowerClimber());
+
+    /*  if the right bumper is activated then do the command */
       m_operatorController.rightBumper().whileTrue(m_Shooter.scoreSpeaker());
       m_operatorController.leftBumper().whileTrue(m_Shooter.intakeNote());
       
-    /*  if the bumper is not active then do not spin */
+    /*  if the left bumper is not active then do not spin */
       m_operatorController.rightBumper().whileFalse(m_Shooter.defaultCommand());
       m_operatorController.leftBumper().whileFalse(m_Shooter.defaultCommand());
   }
