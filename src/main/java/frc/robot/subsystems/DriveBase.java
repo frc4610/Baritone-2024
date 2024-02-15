@@ -46,9 +46,11 @@ public class DriveBase extends SubsystemBase {
     leftBackMotor.setSafetyEnabled(false);
 
     // Motor Control
+    //right and left Back motors are not funtional//
     rightBackMotor.setControl(new DifferentialFollower(Constants.DeviceIds.kFrontRightId, false));
     leftBackMotor.setControl(new DifferentialFollower(Constants.DeviceIds.kFrontLeftId, false));
 
+    //  Invert Motor
     rightFrontMotor.setInverted(false);
     leftFrontMotor.setInverted(true);
 

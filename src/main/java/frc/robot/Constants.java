@@ -15,6 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public final class DeviceIds {
@@ -44,6 +45,22 @@ public final class Constants {
     /* Climber Subsystem Device Ids */
 
     // Climber Motor Ids
-    public static final int kClimbMotorId = 40;
+    public static final int kClimbMotorId = 40;}
+
+    public final class ShooterConstants {
+    /*  Shooter Constants */
+    //  Edit based on robot funtionality or driveteam preference
+    //  Edit at Mentors Discretion
+
+    // Set default shooter constant
+    /*  Doesn't seem to work */
+    public static final double kDefaultSpeed = 0;
+
+   //  Set Shoot Constant
+    public static final double kShootSpeaker = 0.75;
+
+    //  Set intake Constant
+    public static final double kShooterIntake = -0.2;
+
   }
 }
