@@ -37,6 +37,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    /*  Sets default command as the default command */
+    m_Shooter.setDefaultCommand(new Shooter().defaultCommand());
+    m_Climber.setDefaultCommand(new Climber().defaultCommand());
   }
 
   /**
@@ -57,20 +61,12 @@ public class RobotContainer {
     * cancelling on release.
     *m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     */
-
-    /*  if the 'a' button is activated then do the command */
-      m_operatorController.button(3).whileTrue(m_Climber.raiseClimber());
-
-      /*  if the 'b' button is activated then do the command */
-     m_operatorController.button(4).whileTrue(m_Climber.lowerClimber());
-
-    /*  if the right bumper is activated then do the command */
+      /*  sets shooter commands based on a bool */
       m_operatorController.rightBumper().whileTrue(m_Shooter.scoreSpeaker());
       m_operatorController.leftBumper().whileTrue(m_Shooter.intakeNote());
-      
-    /*  if the left bumper is not active then do not spin */
-      m_operatorController.rightBumper().whileFalse(m_Shooter.defaultCommand());
-      m_operatorController.leftBumper().whileFalse(m_Shooter.defaultCommand());
+      /*  sets climber commands based of a bool */
+      m_operatorController.a().whileTrue(m_Climber.lowerClimber());
+      m_operatorController.y().whileTrue(m_Climber.raiseClimber());
   }
 
   /**

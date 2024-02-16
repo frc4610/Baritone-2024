@@ -48,13 +48,16 @@ public final class Constants {
     public static final int kClimbMotorId = 40;
   }
 
+    public final class UniversalConstants {
+      /*  Create A Universal zero command called Default Speed */
+    public static final int kDefaultSpeed = 0;
+
+
+    }
     public final class ShooterConstants {
     /*  Shooter Constants */
     //  Edit based on robot funtionality or driveteam preference
     //  Edit at Mentors Discretion
-
-    // Set default shooter constant
-    public static final double kDefaultSpeed = 0;
 
    //  Set Shoot Constant
     public static final double kShootSpeaker = 0.75;

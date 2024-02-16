@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
    }
    public Command defaultCommand(){
     //  Set motors to zero through constants
-    return(this.runOnce(() ->{topMotor.set(Constants.ShooterConstants.kDefaultSpeed);})); 
+    return(this.runOnce(() ->{topMotor.set(Constants.UniversalConstants.kDefaultSpeed);})); 
    }
     public Command intakeNote(){
     //  Set motors to the intake speed from constants

@@ -19,18 +19,18 @@ public class Climber extends SubsystemBase {
   CommandXboxController m_operatorController = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
 
   //  Declare Motors
-  TalonFX baseMotor = new TalonFX(Constants.DeviceIds.kClimbMotorId);
+  TalonFX climbMotor = new TalonFX(Constants.DeviceIds.kClimbMotorId);
   
 
   public Climber() {
   /*  Motor Configurations */
 
   //  Motor Safety
-  baseMotor.setSafetyEnabled(false);
+  climbMotor.setSafetyEnabled(false);
 
   /*  Motor Control */
   //  Set Motors Inverted
-  baseMotor.setInverted(false);
+  climbMotor.setInverted(false);
   }
 
   @Override
@@ -39,11 +39,16 @@ public class Climber extends SubsystemBase {
   }
   public Command raiseClimber(){
     //  set motors to climbing up constant
-      return(this.runOnce(() ->{baseMotor.set(Constants.ClimbConstants.kClimbUpSpeed);}));
+      return(this.runOnce(() ->{climbMotor.set(Constants.ClimbConstants.kClimbUpSpeed);}));
 
   }
   public Command lowerClimber(){
     // set motors to climbing down constant
-    return(this.runOnce(() ->{baseMotor.set(Constants.ClimbConstants.kClimbDownSpeed);}));
+    return(this.runOnce(() ->{climbMotor.set(Constants.ClimbConstants.kClimbDownSpeed);}));
+
   }
+  public Command defaultCommand(){
+    //  Set motors to zero through constants
+    return(this.runOnce(() ->{climbMotor.set(Constants.UniversalConstants.kDefaultSpeed);})); 
+   }
 }
