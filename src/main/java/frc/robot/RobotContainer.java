@@ -38,6 +38,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
+    /*  new method */
     /*  Sets default command as the default command */
     m_Shooter.setDefaultCommand(new Shooter().defaultCommand());
     m_Climber.setDefaultCommand(new Climber().defaultCommand());
