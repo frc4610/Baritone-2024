@@ -5,7 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -17,25 +19,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveBase m_driveBase = new DriveBase();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Declare robot subsystems here
+  private final DriveBase m_driveBase = new DriveBase();
+  private final Shooter m_Shooter = new Shooter();
+  private final Climber m_Climber = new Climber();
+
+
+  // Declare driver controller 
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  private final CommandXboxController m_operatorController = 
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-<<<<<<< Updated upstream
-=======
 
+    /*  new method */
     /*  Sets default command as the default command */
     m_Shooter.setDefaultCommand(new Shooter().defaultCommand());
     m_Climber.setDefaultCommand(new Climber().defaultCommand());
->>>>>>> Stashed changes
   }
 
   /**
@@ -48,17 +54,20 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
+    /* Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    * new Trigger(m_exampleSubsystem::exampleCondition)
+    *    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
-    m_driverController.b().whileTrue(m_driveBase.exampleCommand());
-
-    // Trigger example command when 'A' button is pressed on Op Controller 
+    * Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    * cancelling on release.
+    *m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    */
+      /*  sets shooter commands based on a bool */
+      m_operatorController.rightBumper().whileTrue(m_Shooter.scoreSpeaker());
+      m_operatorController.leftBumper().whileTrue(m_Shooter.intakeNote());
+      /*  sets climber commands based of a bool */
+      m_operatorController.a().whileTrue(m_Climber.lowerClimber());
+      m_operatorController.y().whileTrue(m_Climber.raiseClimber());
   }
 
   /**
