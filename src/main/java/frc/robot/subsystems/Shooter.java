@@ -38,25 +38,25 @@ public class Shooter extends SubsystemBase {
     topMotor.setInverted(true);
     bottomMotor.setInverted(true);
 
-    //   set bottom motor as a follower to top motor
-    bottomMotor.setControl(new Follower(Constants.DeviceIds.kTopMotorId, false));
-
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-   public Command scoreSpeaker(){
+   public void scoreSpeaker(){
     //  Set motors to the speed constant for speaker
-    return(this.runOnce(() ->{topMotor.set(Constants.ShooterConstants.kShootSpeaker);}));
+    topMotor.set(Constants.ShooterConstants.kShootSpeaker);
+    bottomMotor.set(Constants.ShooterConstants.kShootSpeaker);
    }
-   public Command defaultCommand(){
+   public void stopShooter(){
     //  Set motors to zero through constants
-    return(this.runOnce(() ->{topMotor.set(Constants.UniversalConstants.kDefaultSpeed);})); 
+    topMotor.set(Constants.ShooterConstants.kShootSpeaker);
+    bottomMotor.set(Constants.ShooterConstants.kStopMotors);
    }
-    public Command intakeNote(){
+    public void intakeNote(){
     //  Set motors to the intake speed from constants
-      return(this.runOnce(() ->{topMotor.set(Constants.ShooterConstants.kShooterIntake);}));
+    topMotor.set(Constants.ShooterConstants.kShooterIntake);
+    bottomMotor.set(Constants.ShooterConstants.kShooterIntake);
     }
 }

@@ -48,22 +48,19 @@ public final class Constants {
     public static final int kClimbMotorId = 40;
   }
 
-    public final class UniversalConstants {
-      /*  Create A Universal zero command called Default Speed */
-    public static final int kDefaultSpeed = 0;
-
-
-    }
     public final class ShooterConstants {
     /*  Shooter Constants */
     //  Edit based on robot funtionality or driveteam preference
     //  Edit at Mentors Discretion
 
+    // Stop Motors 
+    public static final int kStopMotors = 0;
+
    //  Set Shoot Constant
-    public static final double kShootSpeaker = 0.75;
+    public static final double kShootSpeaker = -.75;
 
     //  Set intake Constant
-    public static final double kShooterIntake = -0.2;
+    public static final double kShooterIntake = 0.2;
   }
   public final class ClimbConstants {
     /*  Climber Constants */
@@ -74,5 +71,7 @@ public final class Constants {
 
     //  Set Climbing Down Constant
     public static final double kClimbDownSpeed = -0.5;
+
+    public static final int kStopClimb = 0;
   }
 }

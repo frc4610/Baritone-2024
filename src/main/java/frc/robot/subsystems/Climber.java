@@ -37,18 +37,18 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public Command raiseClimber(){
+  public void raiseClimber(){
     //  set motors to climbing up constant
-      return(this.runOnce(() ->{climbMotor.set(Constants.ClimbConstants.kClimbUpSpeed);}));
+  climbMotor.set(Constants.ClimbConstants.kClimbUpSpeed);
 
   }
-  public Command lowerClimber(){
+  public void lowerClimber(){
     // set motors to climbing down constant
-    return(this.runOnce(() ->{climbMotor.set(Constants.ClimbConstants.kClimbDownSpeed);}));
+    climbMotor.set(Constants.ClimbConstants.kClimbDownSpeed);
 
   }
-  public Command defaultCommand(){
+  public void stopClimb(){
     //  Set motors to zero through constants
-    return(this.runOnce(() ->{climbMotor.set(Constants.UniversalConstants.kDefaultSpeed);})); 
+  climbMotor.set(Constants.ClimbConstants.kStopClimb);
    }
 }

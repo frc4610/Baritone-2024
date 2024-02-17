@@ -9,6 +9,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -36,12 +37,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+  configureBindings();
 
-    /*  new method */
-    /*  Sets default command as the default command */
-    m_Shooter.setDefaultCommand(new Shooter().defaultCommand());
-    m_Climber.setDefaultCommand(new Climber().defaultCommand());
   }
 
   /**
@@ -63,11 +60,11 @@ public class RobotContainer {
     *m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     */
       /*  sets shooter commands based on a bool */
-      m_operatorController.rightBumper().whileTrue(m_Shooter.scoreSpeaker());
-      m_operatorController.leftBumper().whileTrue(m_Shooter.intakeNote());
+      m_operatorController.rightBumper().whileTrue(Commands.startEnd(() -> {m_Shooter.scoreSpeaker();},() -> {m_Shooter.stopShooter();}, m_Shooter));
+      m_operatorController.leftBumper().whileTrue(Commands.startEnd(() -> {m_Shooter.intakeNote();},() -> {m_Shooter.stopShooter();},m_Shooter ));
       /*  sets climber commands based of a bool */
-      m_operatorController.a().whileTrue(m_Climber.lowerClimber());
-      m_operatorController.y().whileTrue(m_Climber.raiseClimber());
+      m_operatorController.a().whileTrue(Commands.startEnd(() -> {m_Climber.raiseClimber();},() -> {m_Climber.stopClimb();}, m_Climber));
+      m_operatorController.y().whileTrue(Commands.startEnd(() -> {m_Climber.lowerClimber();},() -> {m_Climber.stopClimb();}, m_Climber));
   }
 
   /**
