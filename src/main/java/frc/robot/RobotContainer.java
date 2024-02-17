@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  // The robot's subsystems and commands are defined here...
+  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Claw m_claw = new Claw();
 
   // Declare robot subsystems here
   private final DriveBase m_driveBase = new DriveBase();
@@ -30,6 +34,8 @@ public class RobotContainer {
   // Declare driver controller 
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      //declare Operator controller
+  private final CommandXboxController m_OpController = new CommandXboxController(1);
 
   private final CommandXboxController m_operatorController = 
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
@@ -65,6 +71,16 @@ public class RobotContainer {
       /*  sets climber commands based of a bool */
       m_operatorController.a().whileTrue(Commands.startEnd(() -> {m_Climber.raiseClimber();},() -> {m_Climber.stopClimb();}, m_Climber));
       m_operatorController.y().whileTrue(Commands.startEnd(() -> {m_Climber.lowerClimber();},() -> {m_Climber.stopClimb();}, m_Climber));
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // cancelling on release.
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    // trigger example command when 'A' but,mton is pressed
+
+    // trigger scoreAmp command 'B' is pressed 
+    m_OpController.b().whileTrue(Commands.startEnd(() -> {m_claw.scoreAmp();},() -> {m_claw.idleClaw();}, m_claw));
+    // trigger intakeClaw command 'X' is pressed
+    m_OpController.x().whileTrue(Commands.startEnd(() -> {m_claw.intakeClaw();},() -> {m_claw.idleClaw();}, m_claw));
   }
 
   /**

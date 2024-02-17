@@ -73,5 +73,18 @@ public final class Constants {
     public static final double kClimbDownSpeed = -0.5;
 
     public static final int kStopClimb = 0;
+  public final class ClawConstants{
+
+    /*Claw motor speeds*/
+
+    // Claw motor forward speed
+    public static final double kClawIntakeSpeed = 0.5;
+
+    // Claw motor backward speed
+    public static final double kClawOuttakeSpeed = -0.5;
+
+    // Claw idle speed 
+    public static final double kClawIdleSpeed = -0.1;
   }
+}
 }
