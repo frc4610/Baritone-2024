@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -26,6 +27,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      //declare Operator controller
+  private final CommandXboxController m_OpController = new CommandXboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,10 +54,12 @@ public class RobotContainer {
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    // trigger example command when 'A' button is pressed
+    // trigger example command when 'A' but,mton is pressed
+
     // trigger scoreAmp command 'B' is pressed 
+    m_OpController.b().whileTrue(Commands.startEnd(() -> {m_claw.scoreAmp();},() -> {m_claw.idleClaw();}, m_claw));
     // trigger intakeClaw command 'X' is pressed
-    // if 'B' and 'X' are not pressed, trigger defaultClaw command
+    m_OpController.x().whileTrue(Commands.startEnd(() -> {m_claw.intakeClaw();},() -> {m_claw.idleClaw();}, m_claw));
   }
 
   /**

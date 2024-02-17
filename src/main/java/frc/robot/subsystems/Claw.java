@@ -10,22 +10,20 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.clawConstants;
+import frc.robot.Constants.ClawConstants;
 
 public class Claw extends SubsystemBase {
 
-  //Declare command Xbox controller
-
   // Declare claw motors
-TalonFX clawMotor= new TalonFX(Constants.DeviceIds.kClawMotorId);
+public TalonFX clawMotor= new TalonFX(Constants.DeviceIds.kClawMotorId);
 
   /** Creates a new Claw. */
   public Claw() {
 
 /* Motor Configuration */
 
-    // set claw motor inversion to false
-    clawMotor.setInverted(false);
+    // set claw motor inversion to true
+    clawMotor.setInverted(true);
   }
 
 
@@ -34,15 +32,14 @@ TalonFX clawMotor= new TalonFX(Constants.DeviceIds.kClawMotorId);
     // This method will be called once per scheduler run
   }
   // Shoot with claw command
-  public Command scoreAmp() {
-    return(this.runOnce(() ->{clawMotor.set(clawConstants.kClawForwardSpeed);}));
-  }
+  public void scoreAmp() {
+ clawMotor.set(ClawConstants.kClawIntakeSpeed);};
+  
   // Pick up with claw command
-  public Command intakeClaw() {
-    return(this.runOnce(() ->{clawMotor.set(clawConstants.kClawBackwardSpeed);}));
-  }
+  public void intakeClaw() {
+  clawMotor.set(ClawConstants.kClawOuttakeSpeed);};
+  
   // No claw buttons pressed command
-  public Command defaultClaw() {
-    return(this.runOnce(() ->{clawMotor.set(clawConstants.kClawIdleSpeed);}));
-  }
+  public void idleClaw() {
+  clawMotor.set(ClawConstants.kClawIdleSpeed);};
 }
