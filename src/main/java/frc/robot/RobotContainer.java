@@ -5,8 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -18,18 +22,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveBase m_driveBase = new DriveBase();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  /* ---Subsystems--- */
+  private final DriveBase m_driveBase = new DriveBase();
+  private final Shooter m_Shooter = new Shooter();
+  private final Climber m_Climber = new Climber();
+  private final Claw m_claw = new Claw();
+
+  /* ---Controllers--- */
+
+  // Driver Controller
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  // Operator Controller
+  private final CommandXboxController m_operatorController = 
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
     // Configure the trigger bindings
-    configureBindings();
-  }
+  configureBindings();
+ }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -41,13 +56,45 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+      /* ---Shooter Bindings--- */
+
+      // Trigger scoreSpeaker method when right bumper is pressed, resets to stopShooter when released
+      m_operatorController.rightBumper().whileTrue(Commands.startEnd(
+        () -> {m_Shooter.scoreSpeaker();},
+        () -> {m_Shooter.stopShooter();}, 
+        m_Shooter));
+    // Trigger intakeNote method when left bumper is pressed, resets to stopShooter when released
+      m_operatorController.leftBumper().whileTrue(Commands.startEnd(
+        () -> {m_Shooter.intakeNote();},
+        () -> {m_Shooter.stopShooter();},
+        m_Shooter ));
+
+      /*  ---Climber Bindings--- */
+
+      // Trigger raiseclimber method when 'A' is pressed, resets to stopClimber when released
+      m_operatorController.a().whileTrue(Commands.startEnd(
+        () -> {m_Climber.raiseClimber();},
+        () -> {m_Climber.stopClimb();}, 
+        m_Climber));
+      // Trigger lowerClimber method when 'Y' is pressed, resets to stopClimber when released
+      m_operatorController.y().whileTrue(Commands.startEnd(
+        () -> {m_Climber.lowerClimber();},
+        () -> {m_Climber.stopClimb();}, 
+        m_Climber));
+
+      /* ---Claw Bindings--- */
+
+      // Trigger scoreAmp command 'B' is pressed, reset to idleClaw when released
+     m_operatorController.b().whileTrue(Commands.startEnd(
+      () -> {m_claw.scoreAmp();},
+      () -> {m_claw.idleClaw();}, 
+      m_claw));
+      // Trigger intakeClaw command 'X' is pressed, reset to idleClaw when released
+     m_operatorController.x().whileTrue(Commands.startEnd(
+      () -> {m_claw.intakeClaw();},
+      () -> {m_claw.idleClaw();}, 
+      m_claw));
   }
 
   /**
