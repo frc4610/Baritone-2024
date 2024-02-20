@@ -22,30 +22,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final Claw m_claw = new Claw();
 
-  // Declare robot subsystems here
+  /* ---Subsystems--- */
   private final DriveBase m_driveBase = new DriveBase();
   private final Shooter m_Shooter = new Shooter();
   private final Climber m_Climber = new Climber();
+  private final Claw m_claw = new Claw();
 
+  /* ---Controllers--- */
 
-  // Declare driver controller 
+  // Driver Controller
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-      //declare Operator controller
-  private final CommandXboxController m_OpController = new CommandXboxController(1);
 
+  // Operator Controller
   private final CommandXboxController m_operatorController = 
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
     // Configure the trigger bindings
   configureBindings();
-
-  }
+ }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -57,30 +56,45 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    /* Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    * new Trigger(m_exampleSubsystem::exampleCondition)
-    *    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    * Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    * cancelling on release.
-    *m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    */
-      /*  sets shooter commands based on a bool */
-      m_operatorController.rightBumper().whileTrue(Commands.startEnd(() -> {m_Shooter.scoreSpeaker();},() -> {m_Shooter.stopShooter();}, m_Shooter));
-      m_operatorController.leftBumper().whileTrue(Commands.startEnd(() -> {m_Shooter.intakeNote();},() -> {m_Shooter.stopShooter();},m_Shooter ));
-      /*  sets climber commands based of a bool */
-      m_operatorController.a().whileTrue(Commands.startEnd(() -> {m_Climber.raiseClimber();},() -> {m_Climber.stopClimb();}, m_Climber));
-      m_operatorController.y().whileTrue(Commands.startEnd(() -> {m_Climber.lowerClimber();},() -> {m_Climber.stopClimb();}, m_Climber));
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+      /* ---Shooter Bindings--- */
 
-    // trigger example command when 'A' but,mton is pressed
+      // Trigger scoreSpeaker method when right bumper is pressed, resets to stopShooter when released
+      m_operatorController.rightBumper().whileTrue(Commands.startEnd(
+        () -> {m_Shooter.scoreSpeaker();},
+        () -> {m_Shooter.stopShooter();}, 
+        m_Shooter));
+    // Trigger intakeNote method when left bumper is pressed, resets to stopShooter when released
+      m_operatorController.leftBumper().whileTrue(Commands.startEnd(
+        () -> {m_Shooter.intakeNote();},
+        () -> {m_Shooter.stopShooter();},
+        m_Shooter ));
 
-    // trigger scoreAmp command 'B' is pressed 
-    m_OpController.b().whileTrue(Commands.startEnd(() -> {m_claw.scoreAmp();},() -> {m_claw.idleClaw();}, m_claw));
-    // trigger intakeClaw command 'X' is pressed
-    m_OpController.x().whileTrue(Commands.startEnd(() -> {m_claw.intakeClaw();},() -> {m_claw.idleClaw();}, m_claw));
+      /*  ---Climber Bindings--- */
+
+      // Trigger raiseclimber method when 'A' is pressed, resets to stopClimber when released
+      m_operatorController.a().whileTrue(Commands.startEnd(
+        () -> {m_Climber.raiseClimber();},
+        () -> {m_Climber.stopClimb();}, 
+        m_Climber));
+      // Trigger lowerClimber method when 'Y' is pressed, resets to stopClimber when released
+      m_operatorController.y().whileTrue(Commands.startEnd(
+        () -> {m_Climber.lowerClimber();},
+        () -> {m_Climber.stopClimb();}, 
+        m_Climber));
+
+      /* ---Claw Bindings--- */
+
+      // Trigger scoreAmp command 'B' is pressed, reset to idleClaw when released
+     m_operatorController.b().whileTrue(Commands.startEnd(
+      () -> {m_claw.scoreAmp();},
+      () -> {m_claw.idleClaw();}, 
+      m_claw));
+      // Trigger intakeClaw command 'X' is pressed, reset to idleClaw when released
+     m_operatorController.x().whileTrue(Commands.startEnd(
+      () -> {m_claw.intakeClaw();},
+      () -> {m_claw.idleClaw();}, 
+      m_claw));
   }
 
   /**

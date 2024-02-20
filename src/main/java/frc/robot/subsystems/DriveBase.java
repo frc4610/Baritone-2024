@@ -23,7 +23,7 @@ public class DriveBase extends SubsystemBase {
   /* Device Declaration */
 
   // Declare Controller
- CommandXboxController m_driverControl = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
+  CommandXboxController m_driverControl = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
 
   // Declare Motors
   TalonFX rightFrontMotor = new TalonFX(Constants.DeviceIds.kFrontRightId);
@@ -55,16 +55,18 @@ public class DriveBase extends SubsystemBase {
     rightBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontRightId, false));
     leftBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontLeftId, false));
 
-   
+    // m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); Original Code
 
-   // m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); Original Code
-
-   m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
+    m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
   }
 
   public void drive(){
-   // m_drive.curvatureDrive(MathUtil.applyDeadband(m_driverControl.getLeftY(), 0.05),MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), m_driverControl.rightBumper().getAsBoolean());
-   m_drive.curvatureDrive(m_driverControl.getLeftY(), m_driverControl.getRightX(), m_driverControl.rightBumper().getAsBoolean());
+    m_drive.curvatureDrive(
+      MathUtil.applyDeadband(m_driverControl.getLeftY()*-1, 0.05),
+      MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), 
+      m_driverControl.getHID().getRightBumper());
+
+    // m_drive.curvatureDrive(m_driverControl.getLeftY()*-1, m_driverControl.getRightX(), m_driverControl.getHID().getRightBumper()); Old Working Code
   }
   @Override
   public void periodic() {
