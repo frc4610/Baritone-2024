@@ -5,12 +5,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.DifferentialFollower;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -28,11 +33,18 @@ public class DriveBase extends SubsystemBase {
   TalonFX leftFrontMotor = new TalonFX(Constants.DeviceIds.kFrontLeftId);
   TalonFX leftBackMotor = new TalonFX(Constants.DeviceIds.kBackLeftId);
 
+  // Declare Encoders
+  private final Encoder m_rightEncoder = new Encoder(Constants.DeviceIds.kFrontRightId, Constants.DeviceIds.kBackRightId); //right side
+  private final Encoder m_leftEncoder = new Encoder(Constants.DeviceIds.kFrontLeftId, Constants.DeviceIds.kBackLeftId); //left side
+
   // Delcare Gyro
   Pigeon2 m_gyro = new Pigeon2(Constants.DeviceIds.kGyroId);
 
+// Declare Odometry
+  private final DifferentialDriveOdometry m_Odometry;
+  
   // Declare Differential Drive
-  DifferentialDrive m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+  DifferentialDrive m_drive;
 
   /** Creates a new DriveBase. */
   public DriveBase() {
@@ -46,20 +58,44 @@ public class DriveBase extends SubsystemBase {
     leftBackMotor.setSafetyEnabled(false);
 
     // Motor Control
-    rightBackMotor.setControl(new DifferentialFollower(Constants.DeviceIds.kFrontRightId, false));
-    leftBackMotor.setControl(new DifferentialFollower(Constants.DeviceIds.kFrontLeftId, false));
-
-    rightFrontMotor.setInverted(false);
+        rightFrontMotor.setInverted(false);
     leftFrontMotor.setInverted(true);
 
+    rightBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontRightId, false));
+    leftBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontLeftId, false));
+
+    // Make sure encoder pulse distance is normal 
+    m_leftEncoder.setDistancePerPulse(1);
+    m_rightEncoder.setDistancePerPulse(1);
+
+    resetEncoders();
+
+    // Glet odometry odomidate
+    m_Odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+
+    // m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); Original Code
+
+    m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
   }
 
   public void drive(){
-    m_drive.curvatureDrive(MathUtil.applyDeadband(m_driverControl.getLeftY(), 0.05),MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), m_driverControl.rightBumper().getAsBoolean());
+    m_drive.curvatureDrive(
+      MathUtil.applyDeadband(m_driverControl.getLeftY()*-1, 0.05),
+      MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), 
+      m_driverControl.getHID().getRightBumper());
+
+    // m_drive.curvatureDrive(m_driverControl.getLeftY()*-1, m_driverControl.getRightX(), m_driverControl.getHID().getRightBumper()); Old Working Code
   }
+
+  public void resetEncoders(){
+    m_leftEncoder.reset();
+    m_rightEncoder.reset();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     drive();
+  m_Odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
   }
 }
