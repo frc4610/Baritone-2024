@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
+
+import java.util.PrimitiveIterator.OfDouble;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.units.*;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -91,4 +98,24 @@ public final class Constants {
     // Claw idle speed 
     public static final double kClawIdleSpeed = -0.25;
   }
-}
+
+  public final class driveBaseConstants{
+    /* Conversion Logic */
+      // How many meters there are per inch
+    public static final double kMetersPerInch = 0.0254;
+      // Meters to inch converion logic
+    public static double InchesToMeters(double inches){
+      return inches * kMetersPerInch;
+    }
+    /*  Declaration */
+    //  declare gear ratio
+    public static final double gearRatioInches = 33.5;
+    //  declare counts per rotation
+    public static final int kFalconCountsPerRotation = 2048; 
+    // Wheel Diameter in Meters
+    public static final double kWheelDiameterMeter = InchesToMeters(6);
+
+     public static final double kDistancePerPulse = (kWheelDiameterMeter * Math.PI) / (double) kFalconCountsPerRotation;
+    }
+  }
+

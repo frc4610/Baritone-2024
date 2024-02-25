@@ -1,8 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
+//Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climber;
@@ -13,15 +16,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+
+
+public class SysIdRoutineBot {
+  //  The Robot's subsystems and commands are defined here
 
   /* ---Subsystems--- */
   private final DriveBase m_driveBase = new DriveBase();
@@ -38,25 +45,24 @@ public class RobotContainer {
   // Operator Controller
   private final CommandXboxController m_operatorController = 
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
-
+      
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  public SysIdRoutineBot() {
 
     // Configure the trigger bindings
   configureBindings();
  }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
+   * Use this method to define bindings between conditions and commands. These are useful for
+   * automating robot behaviors based on button and sensor input.
+   *
+   * <p>Should be called during {@link Robot#robotInit()}.
+   *
+   * <p>Event binding methods are available on the {@link Trigger} class.
    */
-  private void configureBindings() {
-
+  public void configureBindings() {
+      /*  ---Operator bindings--- */
       /* ---Shooter Bindings--- */
 
       // Trigger scoreSpeaker method when right bumper is pressed, resets to stopShooter when released
@@ -69,8 +75,7 @@ public class RobotContainer {
         () -> {m_Shooter.intakeNote();},
         () -> {m_Shooter.stopShooter();},
         m_Shooter ));
-
-      /*  ---Climber Bindings--- */
+              /*  ---Climber Bindings--- */
 
       // Trigger raiseclimber method when 'A' is pressed, resets to stopClimber when released
       m_operatorController.a().whileTrue(Commands.startEnd(
@@ -95,15 +100,26 @@ public class RobotContainer {
       () -> {m_claw.intakeClaw();},
       () -> {m_claw.idleClaw();}, 
       m_claw));
+
+    // Bind full set of SysId routine tests to buttons; a complete routine should run each of these
+    // once.
+    m_driverController.a().whileTrue(
+      m_driveBase.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    m_driverController.b().whileTrue(
+      m_driveBase.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    m_driverController.x().whileTrue(
+      m_driveBase.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    m_driverController.y().whileTrue(
+      m_driveBase.sysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to define the command that runs during autonomous.
    *
-   * @return the command to run in autonomous
+   * <p>Scheduled during {@link Robot#autonomousInit()}.
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+    // Do nothing
+    return m_driveBase.run(() -> {});
   }
 }
