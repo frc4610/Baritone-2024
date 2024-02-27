@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.DifferentialFollower;
 import com.ctre.phoenix6.controls.Follower;
@@ -48,35 +49,23 @@ public class DriveBase extends SubsystemBase {
   CommandXboxController m_driverControl = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
 
   // Declare Motors
-  TalonFX rightFrontMotor = new TalonFX(Constants.DeviceIds.kFrontRightId);
-  TalonFX rightBackMotor = new TalonFX(Constants.DeviceIds.kBackRightId);
-  TalonFX leftFrontMotor = new TalonFX(Constants.DeviceIds.kFrontLeftId);
-  TalonFX leftBackMotor = new TalonFX(Constants.DeviceIds.kBackLeftId);
+  TalonFX rightFrontMotor = new TalonFX(Constants.DeviceIds.kFrontRightId, "*");
+  TalonFX rightBackMotor = new TalonFX(Constants.DeviceIds.kBackRightId, "*");
+  TalonFX leftFrontMotor = new TalonFX(Constants.DeviceIds.kFrontLeftId, "*");
+  TalonFX leftBackMotor = new TalonFX(Constants.DeviceIds.kBackLeftId, "*");
 
   // Delcare Gyro
   Pigeon2 m_gyro = new Pigeon2(Constants.DeviceIds.kGyroId);
   
   // Declare Differential Drive
   DifferentialDrive m_drive;
-//  gear ratio 33.5
+  //  gear ratio 33.5
 
-public StatusSignal<Double> rightVelocity(){
-  // get motor positions based in meters
-  
-  return rightFrontMotor.getVelocity();
-}
-public StatusSignal<Double> leftVelocity(){
- return leftFrontMotor.getVelocity();
-}
-public StatusSignal<Double> rightRotation(){
-    return rightFrontMotor.getPosition();
-}
-public StatusSignal<Double> leftRotation(){
-    return leftFrontMotor.getPosition();
-}
-public StatusSignal<Double> rightTickCount(){
-  return rightFrontMotor.();
-}
+  /*  Encoders */
+  private final Encoder m_rightEncoder = new Encoder(
+    Constants.DeviceIds.kRightEncoderA, Constants.DeviceIds.kRightEncoderB);//  Right Side Encoders
+  private final Encoder m_leftEncoder = new Encoder(
+    Constants.DeviceIds.kLeftEncoderA, Constants.DeviceIds.kLeftEncoderB);//  Left Side Encoders
 
   //  Odometry
    private final DifferentialDriveOdometry m_Odometry;
@@ -108,15 +97,15 @@ public StatusSignal<Double> rightTickCount(){
                     .voltage(
                         m_appliedVoltage.mut_replace(
                               leftFrontMotor.get() * RobotController.getBatteryVoltage(), Volts))
-                    .linearPosition(m_distance.mut_replace(getPosition().getDistance(), Meters))
+                    .linearPosition(m_distance.mut_replace(m_leftEncoder.getDistance(), Meters))
                     .linearVelocity(
-                        m_velocity.mut_replace(rightFrontMotor.getRate(), MetersPerSecond));
+                        m_velocity.mut_replace(m_leftEncoder.getRate(), MetersPerSecond));
                 // Record a frame for the right motors.  Since these share an encoder, we consider
                 // the entire group to be one motor.
                 log.motor("drive-right")
                     .voltage(
                         m_appliedVoltage.mut_replace(
-                            rightFrontDrive.get() * RobotController.getBatteryVoltage(), Volts))
+                            rightFrontMotor.get() * RobotController.getBatteryVoltage(), Volts))
                     .linearPosition(m_distance.mut_replace(m_rightEncoder.getDistance(), Meters))
                     .linearVelocity(
                         m_velocity.mut_replace(m_rightEncoder.getRate(), MetersPerSecond));
@@ -151,22 +140,22 @@ public StatusSignal<Double> rightTickCount(){
     //  Sends Encoder data to Shufleboard
     m_EncoderTab = Shuffleboard.getTab("Encoders");
 
-    m_EncoderTab.addDouble("Right Encoder Count", () -> /*Insert Encoder */.getDistance());
-    m_EncoderTab.addDouble("Left Encoder Count", () -> /*Insert Encoder */.getDistance());
-    m_EncoderTab.addDouble("Gyro Heading", () -> m_gryo.getAngle());
+    m_EncoderTab.addDouble("Right Encoder Count", () -> m_rightEncoder.getDistance());
+    m_EncoderTab.addDouble("Left Encoder Count", () -> m_leftEncoder.getDistance());
+    m_EncoderTab.addDouble("Gyro Heading", () -> m_gyro.getAngle());
 
 
 
     m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
 
       //converts 
-  m_leftEncoder.setDistancePerPulse(Constants.DrivetrainConstants.kLinearDistanceConversionFactor);
-  m_rightEncoder.setDistancePerPulse(-Constants.DrivetrainConstants.kLinearDistanceConversionFactor);
+  m_leftEncoder.setDistancePerPulse(Constants.DriveBaseConstants.kLinearDistanceConversionFactor);
+  m_rightEncoder.setDistancePerPulse(-Constants.DriveBaseConstants.kLinearDistanceConversionFactor);
 
   resetEncoders();
-  m_gryo.reset();
+  m_gyro.reset();
 
-  m_Odometry = new DifferentialDriveOdometry(m_gryo.getRotation2d(),
+  m_Odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),
    m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
   }
 
@@ -180,8 +169,8 @@ public StatusSignal<Double> rightTickCount(){
   }
 
   public void resetEncoders(){
-    /*Insert Encoder */.reset();
-    /*Insert Encoder */.reset();
+  m_rightEncoder.reset();
+  m_leftEncoder.reset();
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -198,8 +187,8 @@ public StatusSignal<Double> rightTickCount(){
     drive();
     m_Odometry.update
     (m_gyro.getRotation2d(),
-     m_leftDrive.getDistance(), 
-     m_rightDrive.getDistance());
+     m_leftEncoder.getDistance(), 
+     m_rightEncoder.getDistance());
   }
 
   }

@@ -38,6 +38,12 @@ public final class Constants {
     // Gyro
     public static final int kGyroId = 14;
 
+    //Encoders
+    public static final int kLeftEncoderA = 15;
+    public static final int kLeftEncoderB = 16;
+    public static final int kRightEncoderA = 17;
+    public static final int kRightEncoderB = 18;
+
     /* Shooter Subsystem Device Ids */
     
     // Shooter Motor Ids
@@ -99,7 +105,7 @@ public final class Constants {
     public static final double kClawIdleSpeed = -0.25;
   }
 
-  public final class driveBaseConstants{
+  public final class DriveBaseConstants{
     /* Conversion Logic */
       // How many meters there are per inch
     public static final double kMetersPerInch = 0.0254;
@@ -116,6 +122,8 @@ public final class Constants {
     public static final double kWheelDiameterMeter = InchesToMeters(6);
 
      public static final double kDistancePerPulse = (kWheelDiameterMeter * Math.PI) / (double) kFalconCountsPerRotation;
+
+     public static final double kLinearDistanceConversionFactor = kWheelDiameterMeter * Math.PI;
     }
   }
 
