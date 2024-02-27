@@ -4,10 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.DifferentialFollower;
 import com.ctre.phoenix6.controls.Follower;
@@ -66,6 +62,8 @@ public class DriveBase extends SubsystemBase {
     Constants.DeviceIds.kRightEncoderA, Constants.DeviceIds.kRightEncoderB);//  Right Side Encoders
   private final Encoder m_leftEncoder = new Encoder(
     Constants.DeviceIds.kLeftEncoderA, Constants.DeviceIds.kLeftEncoderB);//  Left Side Encoders
+
+        
 
   //  Odometry
    private final DifferentialDriveOdometry m_Odometry;
