@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -34,14 +35,14 @@ public class DriveBase extends SubsystemBase {
   TalonFX leftBackMotor = new TalonFX(Constants.DeviceIds.kBackLeftId);
 
   // Declare Encoders
-  private final Encoder m_rightEncoder = new Encoder(Constants.DeviceIds.kFrontRightId, Constants.DeviceIds.kBackRightId); //right side
-  private final Encoder m_leftEncoder = new Encoder(Constants.DeviceIds.kFrontLeftId, Constants.DeviceIds.kBackLeftId); //left side
+  private static final Encoder m_rightEncoder = new Encoder(Constants.DeviceIds.kRightEncoder_A, Constants.DeviceIds.kRightEncoder_B); //right side
+  private static final Encoder m_leftEncoder = new Encoder(Constants.DeviceIds.kLeftEncoder_A, Constants.DeviceIds.kLeftEncoder_B); //left side
 
   // Delcare Gyro
   Pigeon2 m_gyro = new Pigeon2(Constants.DeviceIds.kGyroId);
 
-// Declare Odometry
-  private final DifferentialDriveOdometry m_Odometry;
+  // Declare Odometry
+  DifferentialDriveOdometry m_Odometry;
   
   // Declare Differential Drive
   DifferentialDrive m_drive;
@@ -58,28 +59,15 @@ public class DriveBase extends SubsystemBase {
     leftBackMotor.setSafetyEnabled(false);
 
     // Motor Control
-<<<<<<< HEAD
-        rightFrontMotor.setInverted(false);
-=======
     rightFrontMotor.setInverted(false);
->>>>>>> development
     leftFrontMotor.setInverted(true);
 
     rightBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontRightId, false));
     leftBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontLeftId, false));
 
-<<<<<<< HEAD
-    // Make sure encoder pulse distance is normal 
-    m_leftEncoder.setDistancePerPulse(1);
-    m_rightEncoder.setDistancePerPulse(1);
+    // Encoder config 
+    m_rightEncoder.setDistancePerPulse(Units.inchesToMeters(6 * Math.PI));
 
-    resetEncoders();
-
-    // Glet odometry odomidate
-    m_Odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-
-=======
->>>>>>> development
     // m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); Original Code
 
     m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing

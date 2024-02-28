@@ -12,21 +12,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClawConstants;
 
-
-
 public class Claw extends SubsystemBase {
 
   // Declare claw motors
-  public TalonFX clawMotor= new TalonFX(Constants.DeviceIds.kClawMotorId);
+public TalonFX clawMotor= new TalonFX(Constants.DeviceIds.kClawMotorId);
 
   /** Creates a new Claw. */
   public Claw() {
 
-  /* Motor Configuration */
+/* Motor Configuration */
 
     // set claw motor inversion to true
     clawMotor.setInverted(true);
   }
+
 
   @Override
   public void periodic() {
