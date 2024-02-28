@@ -47,17 +47,48 @@ public final class Constants {
     // Climber Motor Ids
     public static final int kClimbMotorId = 40;
   }
+
+  public final class ShooterConstants {
+    /*  Shooter Constants */
+
+    //  Edit based on robot funtionality or driveteam preference
+    //  Edit at Mentors Discretion
+
+    // Stop Motors 
+    public static final int kStopMotors = 0;
+
+   //  Set Shoot Constant
+    public static final double kShootSpeaker = -0.85;
+
+    //  Set intake Constant
+    public static final double kShooterIntake = 0.5;
+  }
+  
+  public final class ClimbConstants {
+    /*  Climber Constants */
+    //  Edit based on climb mechanisms functionality
+
+    //  Set Climbing Upwards Constant
+    public static final double kClimbUpSpeed = 0.5;
+
+    //  Set Climbing Down Constant
+    public static final double kClimbDownSpeed = -0.5;
+
+    public static final int kStopClimb = 0;
+
+  }
+
   public final class ClawConstants{
 
     /*Claw motor speeds*/
 
     // Claw motor forward speed
-    public static final double kClawIntakeSpeed = 0.5;
+    public static final double kClawIntakeSpeed = 0.75;
 
     // Claw motor backward speed
-    public static final double kClawOuttakeSpeed = -0.5;
+    public static final double kClawOuttakeSpeed = -0.75;
 
     // Claw idle speed 
-    public static final double kClawIdleSpeed = -0.1;
+    public static final double kClawIdleSpeed = -0.25;
   }
 }

@@ -25,7 +25,7 @@ public class DriveBase extends SubsystemBase {
   /* Device Declaration */
 
   // Declare Controller
- CommandXboxController m_driverControl = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
+  CommandXboxController m_driverControl = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
 
   // Declare Motors
   TalonFX rightFrontMotor = new TalonFX(Constants.DeviceIds.kFrontRightId);
@@ -58,12 +58,17 @@ public class DriveBase extends SubsystemBase {
     leftBackMotor.setSafetyEnabled(false);
 
     // Motor Control
+<<<<<<< HEAD
         rightFrontMotor.setInverted(false);
+=======
+    rightFrontMotor.setInverted(false);
+>>>>>>> development
     leftFrontMotor.setInverted(true);
 
     rightBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontRightId, false));
     leftBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontLeftId, false));
 
+<<<<<<< HEAD
     // Make sure encoder pulse distance is normal 
     m_leftEncoder.setDistancePerPulse(1);
     m_rightEncoder.setDistancePerPulse(1);
@@ -73,6 +78,8 @@ public class DriveBase extends SubsystemBase {
     // Glet odometry odomidate
     m_Odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
 
+=======
+>>>>>>> development
     // m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); Original Code
 
     m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
@@ -97,5 +104,10 @@ public class DriveBase extends SubsystemBase {
     // This method will be called once per scheduler run
     drive();
   m_Odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+  }
+
+  public Command exampleCommand(){
+    
+    return this.runOnce(() -> { /* Command Logic */});
   }
 }
