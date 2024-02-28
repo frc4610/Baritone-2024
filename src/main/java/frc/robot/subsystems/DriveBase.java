@@ -10,7 +10,9 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,6 +36,9 @@ public class DriveBase extends SubsystemBase {
   // Delcare Gyro
   Pigeon2 m_gyro = new Pigeon2(Constants.DeviceIds.kGyroId);
 
+  // Declare Encoders
+  public static final Encoder m_rightEncoder = new Encoder(Constants.DeviceIds.kRightEncoder_A, Constants.DeviceIds.kRightEncoder_B, true, EncodingType.k4X);
+  public static final Encoder m_leftEncoder = new Encoder(Constants.DeviceIds.kLeftEncoder_A, Constants.DeviceIds.kLeftEncoder_B,false, EncodingType.k4X);
   // Declare Differential Drive
   DifferentialDrive m_drive;
 
