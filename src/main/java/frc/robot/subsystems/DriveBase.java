@@ -73,7 +73,7 @@ public class DriveBase extends SubsystemBase {
     m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
   }
 
-  public void drive(){
+  public void curvatureDrive(){
     m_drive.curvatureDrive(
       MathUtil.applyDeadband(m_driverControl.getLeftY()*-1, 0.05),
       MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), 
@@ -81,16 +81,26 @@ public class DriveBase extends SubsystemBase {
 
     // m_drive.curvatureDrive(m_driverControl.getLeftY()*-1, m_driverControl.getRightX(), m_driverControl.getHID().getRightBumper()); Old Working Code
   }
+  public void tankDrive(double leftSpeed, double rightSpeed){
+    m_drive.tankDrive(leftSpeed,rightSpeed);
+  }
 
   public void resetEncoders(){
     m_leftEncoder.reset();
     m_rightEncoder.reset();
   }
 
+  public double getLeftEncoder(){
+    return m_leftEncoder.getDistance();
+  }
+  public double getRightEncoder(){
+    return m_rightEncoder.getDistance();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    drive();
+    curvatureDrive();
   m_Odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
   }
 

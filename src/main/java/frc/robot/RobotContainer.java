@@ -9,6 +9,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.Commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -29,6 +30,11 @@ public class RobotContainer {
   private final Shooter m_Shooter = new Shooter();
   private final Climber m_Climber = new Climber();
   private final Claw m_claw = new Claw();
+
+  /* ---Commands--- */
+
+  // Reverse autonomous command
+  private final AutoReverse m_AutoReverse = new AutoReverse(m_driveBase, 0);
 
   /* ---Controllers--- */
 
@@ -105,6 +111,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return m_AutoReverse;
   }
 }

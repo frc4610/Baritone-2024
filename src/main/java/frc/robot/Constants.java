@@ -29,10 +29,10 @@ public final class Constants {
     public static final int kBackLeftId = 13;
 
     //Encoder
-    public static final int kRightEncoder_A = 15;
-    public static final int kRightEncoder_B = 16;
-    public static final int kLeftEncoder_A = 17;
-    public static final int kLeftEncoder_B = 18;
+    public static final int kRightEncoder_A = 0;
+    public static final int kRightEncoder_B = 1;
+    public static final int kLeftEncoder_A = 2;
+    public static final int kLeftEncoder_B = 3;
 
     // Gyro
     public static final int kGyroId = 14;
