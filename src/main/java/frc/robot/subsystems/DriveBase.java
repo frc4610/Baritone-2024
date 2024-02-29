@@ -4,18 +4,22 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.controls.DifferentialFollower;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -37,10 +41,13 @@ public class DriveBase extends SubsystemBase {
   Pigeon2 m_gyro = new Pigeon2(Constants.DeviceIds.kGyroId);
 
   // Declare Encoders
-  public static final Encoder m_rightEncoder = new Encoder(Constants.DeviceIds.kRightEncoder_A, Constants.DeviceIds.kRightEncoder_B, true, EncodingType.k4X);
-  public static final Encoder m_leftEncoder = new Encoder(Constants.DeviceIds.kLeftEncoder_A, Constants.DeviceIds.kLeftEncoder_B,false, EncodingType.k4X);
+   Encoder m_rightEncoder = new Encoder(Constants.DeviceIds.kRightEncoder_A, Constants.DeviceIds.kRightEncoder_B, true, EncodingType.k4X);
+   Encoder m_leftEncoder = new Encoder(Constants.DeviceIds.kLeftEncoder_A, Constants.DeviceIds.kLeftEncoder_B,false, EncodingType.k4X);
+  
   // Declare Differential Drive
   DifferentialDrive m_drive;
+
+private final ShuffleboardTab m_EncoderTab;
 
   /** Creates a new DriveBase. */
   public DriveBase() {
@@ -60,6 +67,14 @@ public class DriveBase extends SubsystemBase {
     rightBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontRightId, false));
     leftBackMotor.setControl(new Follower(Constants.DeviceIds.kFrontLeftId, false));
 
+
+      //  Sends Encoder data to Shufleboard
+    m_EncoderTab = Shuffleboard.getTab("Encoders");
+
+    m_EncoderTab.addDouble("Right Encoder Count", () -> m_rightEncoder.getDistance());
+    m_EncoderTab.addDouble("Left Encoder Count", () -> m_leftEncoder.getDistance());
+    m_EncoderTab.addDouble("Gyro Heading", () -> m_gyro.getAngle());
+
     // m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); Original Code
 
     m_drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor); // For motor testing
@@ -70,17 +85,21 @@ public class DriveBase extends SubsystemBase {
       MathUtil.applyDeadband(m_driverControl.getLeftY()*-1, 0.05),
       MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), 
       m_driverControl.getHID().getRightBumper());
-
-    // m_drive.curvatureDrive(m_driverControl.getLeftY()*-1, m_driverControl.getRightX(), m_driverControl.getHID().getRightBumper()); Old Working Code
   }
+
+  public void resetEncoders(){
+    m_rightEncoder.reset();
+    m_leftEncoder.reset();
+  }
+  public double getLeftEncoder(){
+    return m_leftEncoder.getDistance();
+  }
+   public double getRightEncoder(){
+    return m_rightEncoder.getDistance();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    drive();
-  }
-
-  public Command exampleCommand(){
-    
-    return this.runOnce(() -> { /* Command Logic */});
   }
 }

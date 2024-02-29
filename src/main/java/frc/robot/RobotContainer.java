@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Commands.BackwardsAuto;
+import frc.robot.Commands.ScoreAndLeave;
+import frc.robot.Commands.ShootAuto;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.AutoChooser;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Shooter;
@@ -108,6 +112,21 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+
+    if(AutoChooser.ScoreAndLeave = true){
+    
     return null;
+    } 
+    else if (AutoChooser.ShootAuto = true){
+
+      return null;
+    } 
+    else (AutoChooser.BackwardsAuto = true){
+      return null;
+    }
+
+    
+  
+   
   }
 }

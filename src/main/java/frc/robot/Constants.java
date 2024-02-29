@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -31,10 +32,10 @@ public final class Constants {
     public static final int kBackLeftId = 13;
 
     // Encoder
-    public static final int kRightEncoder_A = 15;
-    public static final int kRightEncoder_B= 16;
-    public static final int kLeftEncoder_A = 17;
-    public static final int kLeftEncoder_B = 18;
+    public static final int kRightEncoder_A = 0;
+    public static final int kRightEncoder_B= 1;
+    public static final int kLeftEncoder_A = 2;
+    public static final int kLeftEncoder_B = 3;
     // Gyro
     public static final int kGyroId = 14;
 
@@ -105,9 +106,12 @@ public final class Constants {
     public static final double driveKD = 0.0;
     public static final double driveKF = 0.0;
 
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(6);
 
-    public static final double kWheelDiameterMeters = 6 * Math.PI;
+    public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
 
-    public static final double kDriveTick2Feet = 1.0 / 2048 * 6 * Math.PI / 12;
+    public static final double kDriveTick = 1.0 / 2048 * kWheelCircumference / 12;
+
+    public static final double kDistancePerPulse = 0.0;
   }
 }
