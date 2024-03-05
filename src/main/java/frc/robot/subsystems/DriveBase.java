@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.DifferentialFollower;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -75,7 +75,7 @@ public class DriveBase extends SubsystemBase {
 
   public void curvatureDrive(){
     m_drive.curvatureDrive(
-      MathUtil.applyDeadband(m_driverControl.getLeftY()*-1, 0.05),
+      MathUtil.applyDeadband(m_driverControl.getLeftY()*Constants.DriveBaseConstants.kSpeedMultiplier, 0.05),
       MathUtil.applyDeadband(m_driverControl.getRightX(), 0.05), 
       m_driverControl.getHID().getRightBumper());
 

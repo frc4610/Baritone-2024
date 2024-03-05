@@ -14,6 +14,7 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
+
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
   }
@@ -59,6 +60,12 @@ public final class Constants {
 
   }
 
+  public final class DriveBaseConstants {
+
+    /* Speed Control (Must be negative) */
+    public static final double kSpeedMultiplier = -0.5;
+    
+  }
   public final class ShooterConstants {
     /*  Shooter Constants */
 
@@ -69,10 +76,10 @@ public final class Constants {
     public static final int kStopMotors = 0;
 
    //  Set Shoot Constant
-    public static final double kShootSpeaker = -0.85;
+    public static final double kShootSpeaker = -0.75;
 
     //  Set intake Constant
-    public static final double kShooterIntake = 0.5;
+    public static final double kShooterIntake = 0.3;
   }
   
   public final class ClimbConstants {
@@ -80,10 +87,10 @@ public final class Constants {
     //  Edit based on climb mechanisms functionality
 
     //  Set Climbing Upwards Constant
-    public static final double kClimbUpSpeed = 0.5;
+    public static final double kClimbUpSpeed = 0.25;
 
     //  Set Climbing Down Constant
-    public static final double kClimbDownSpeed = -0.5;
+    public static final double kClimbDownSpeed = -0.25;
 
     public static final int kStopClimb = 0;
 
