@@ -53,7 +53,18 @@ public final class Constants {
 
     /* Speed Control (Must be negative) */
     public static final double kSpeedMultiplier = -0.5;
-    
+
+    // Wheel circumference in inches
+    public static final double kLinearDistanceConversionFactor = 6*Math.PI;
+
+    /* Turn PID Constants */
+    public static final double kTurnP = 1;
+    public static final double kTurnI = 0;
+    public static final double kTurnD = 0;
+
+    /* Gyro Turn Command Constants */
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
   }
   public final class ShooterConstants {
     /*  Shooter Constants */
