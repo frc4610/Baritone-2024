@@ -4,20 +4,18 @@
 
 package frc.robot;
 
-import frc.robot.Commands.BackwardsAuto;
-import frc.robot.Commands.ScoreAndLeave;
-import frc.robot.Commands.ShootAuto;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.AutoChooser;
-import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ScoreSpeakerAndLeave;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,15 +32,14 @@ public class RobotContainer {
   private final Climber m_Climber = new Climber();
   private final Claw m_claw = new Claw();
 
+  private final Command m_ScoreSpeakerAndLeaveCommand = new ScoreSpeakerAndLeave(m_driveBase, m_Shooter);
+
   /* ---Controllers--- */
 
-  /*  Experimental Flight Joystick Controls
-  private final XboxController m_driverController =
-      new XboxController(OperatorConstants.kDriverControllerPort);
-  */
-  // Controllers
+  // Driver Controller
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
   // Operator Controller
   private final CommandXboxController m_operatorController = 
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
@@ -68,12 +65,12 @@ public class RobotContainer {
       /* ---Shooter Bindings--- */
 
       // Trigger scoreSpeaker method when right bumper is pressed, resets to stopShooter when released
-      m_operatorController.rightBumper().toggleOnTrue(Commands.startEnd(
+      m_operatorController.rightBumper().whileTrue(Commands.startEnd(
         () -> {m_Shooter.scoreSpeaker();},
         () -> {m_Shooter.stopShooter();}, 
         m_Shooter));
     // Trigger intakeNote method when left bumper is pressed, resets to stopShooter when released
-      m_operatorController.leftBumper().toggleOnTrue(Commands.startEnd(
+      m_operatorController.leftBumper().whileTrue(Commands.startEnd(
         () -> {m_Shooter.intakeNote();},
         () -> {m_Shooter.stopShooter();},
         m_Shooter ));
@@ -81,12 +78,12 @@ public class RobotContainer {
       /*  ---Climber Bindings--- */
 
       // Trigger raiseclimber method when 'A' is pressed, resets to stopClimber when released
-      m_operatorController.a().toggleOnTrue(Commands.startEnd(
+      m_operatorController.a().whileTrue(Commands.startEnd(
         () -> {m_Climber.raiseClimber();},
         () -> {m_Climber.stopClimb();}, 
         m_Climber));
       // Trigger lowerClimber method when 'Y' is pressed, resets to stopClimber when released
-      m_operatorController.y().toggleOnTrue(Commands.startEnd(
+      m_operatorController.y().whileTrue(Commands.startEnd(
         () -> {m_Climber.lowerClimber();},
         () -> {m_Climber.stopClimb();}, 
         m_Climber));
@@ -94,15 +91,16 @@ public class RobotContainer {
       /* ---Claw Bindings--- */
 
       // Trigger scoreAmp command 'B' is pressed, reset to idleClaw when released
-     m_operatorController.b().toggleOnTrue(Commands.startEnd(
+     m_operatorController.b().whileTrue(Commands.startEnd(
       () -> {m_claw.scoreAmp();},
       () -> {m_claw.idleClaw();}, 
       m_claw));
       // Trigger intakeClaw command 'X' is pressed, reset to idleClaw when released
-     m_operatorController.x().toggleOnTrue(Commands.startEnd(
+     m_operatorController.x().whileTrue(Commands.startEnd(
       () -> {m_claw.intakeClaw();},
       () -> {m_claw.idleClaw();}, 
       m_claw));
+      
   }
 
   /**
@@ -112,21 +110,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-
-    if(AutoChooser.ScoreAndLeave = true){
-    
-    return null;
-    } 
-    else if (AutoChooser.ShootAuto = true){
-
-      return null;
-    } 
-    else (AutoChooser.BackwardsAuto = true){
-      return null;
-    }
-
-    
-  
-   
+    return m_ScoreSpeakerAndLeaveCommand;
   }
 }

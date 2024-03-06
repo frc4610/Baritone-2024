@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.Constants.DeviceIds;
 import frc.robot.Constants.OperatorConstants;
 
 public class Shooter extends SubsystemBase {
@@ -48,12 +47,12 @@ public class Shooter extends SubsystemBase {
    public void scoreSpeaker(){
     //  Set motors to the speed constant for speaker
     topMotor.set(Constants.ShooterConstants.kShootSpeaker);
-    
+    Timer.delay(0.250);
     bottomMotor.set(Constants.ShooterConstants.kShootSpeaker);
    }
    public void stopShooter(){
     //  Set motors to zero through constants
-    topMotor.set(Constants.ShooterConstants.kShootSpeaker);
+    topMotor.set(Constants.ShooterConstants.kStopMotors);
     bottomMotor.set(Constants.ShooterConstants.kStopMotors);
    }
     public void intakeNote(){
