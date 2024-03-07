@@ -5,13 +5,18 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ScoreSpeakerAndLeave;
+import frc.robot.commands.Autos.DriveBackwards;
+import frc.robot.commands.Autos.DriveDistance;
+import frc.robot.commands.Autos.ScoreSpeakerAndLeave;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
@@ -26,6 +31,8 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+ 
+
   /* ---Subsystems--- */
   private final DriveBase m_driveBase = new DriveBase();
   private final Shooter m_Shooter = new Shooter();
@@ -33,7 +40,8 @@ public class RobotContainer {
   private final Claw m_claw = new Claw();
 
   private final Command m_ScoreSpeakerAndLeaveCommand = new ScoreSpeakerAndLeave(m_driveBase, m_Shooter);
-
+  private final Command m_DriveDistance = new DriveDistance(0, 0, m_driveBase);
+  private final Command m_DriveBackwards = new DriveBackwards(48,0.5,m_driveBase);
   /* ---Controllers--- */
 
   // Driver Controller
@@ -44,11 +52,31 @@ public class RobotContainer {
   private final CommandXboxController m_operatorController = 
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
+
+private SendableChooser<String> AutoSelector;
+public ShuffleboardTab Autos;
+
+
+public static final String DriveDistance = "go backwards";
+public static final String ScoreSpeakerAndLeave = "score speaker and leave";
+public static final String ShootAuto = "score and stay";
+
+private String Selected;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     // Configure the trigger bindings
   configureBindings();
+   
+  AutoSelector = new SendableChooser<String>();
+  Autos = Shuffleboard.getTab("Auto ");
+
+  AutoSelector.addOption("Score and leave", ScoreSpeakerAndLeave);
+  AutoSelector.addOption("Drive a Distance Backwards", DriveDistance);
+  AutoSelector.setDefaultOption("score", ShootAuto);
+    
+  Autos.add("Auto selector",AutoSelector).withPosition(2, 0).withSize(6, 4);
  }
 
   /**
@@ -63,7 +91,6 @@ public class RobotContainer {
   private void configureBindings() {
 
       /* ---Shooter Bindings--- */
-
       // Trigger scoreSpeaker method when right bumper is pressed, resets to stopShooter when released
       m_operatorController.rightBumper().whileTrue(Commands.startEnd(
         () -> {m_Shooter.scoreSpeaker();},
@@ -110,6 +137,18 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_ScoreSpeakerAndLeaveCommand;
+
+    if(AutoSelector.getSelected() == DriveDistance){
+      return m_DriveDistance;
+    } else if(AutoSelector.getSelected() == ScoreSpeakerAndLeave){
+       return m_ScoreSpeakerAndLeaveCommand;
+    } else
+    {
+     return Commands.runOnce(() -> m_Shooter.scoreSpeaker(), m_Shooter); 
+    }
+
+    
+  
+   
   }
 }
