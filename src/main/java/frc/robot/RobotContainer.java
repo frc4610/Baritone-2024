@@ -4,15 +4,18 @@
 
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ScoreSpeakerAndLeave;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +31,8 @@ public class RobotContainer {
   private final Shooter m_Shooter = new Shooter();
   private final Climber m_Climber = new Climber();
   private final Claw m_claw = new Claw();
+
+  private final Command m_ScoreSpeakerAndLeaveCommand = new ScoreSpeakerAndLeave(m_driveBase, m_Shooter);
 
   /* ---Controllers--- */
 
@@ -95,6 +100,7 @@ public class RobotContainer {
       () -> {m_claw.intakeClaw();},
       () -> {m_claw.idleClaw();}, 
       m_claw));
+      
   }
 
   /**
@@ -104,6 +110,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return m_ScoreSpeakerAndLeaveCommand;
   }
 }
