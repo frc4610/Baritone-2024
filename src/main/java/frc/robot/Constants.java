@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -32,11 +29,6 @@ public final class Constants {
     public static final int kFrontLeftId = 12;
     public static final int kBackLeftId = 13;
 
-    // Encoder
-    public static final int kRightEncoder_A = 0;
-    public static final int kRightEncoder_B= 1;
-    public static final int kLeftEncoder_A = 2;
-    public static final int kLeftEncoder_B = 3;
     // Gyro
     public static final int kGyroId = 14;
 
@@ -57,8 +49,6 @@ public final class Constants {
     public static final int kClimbMotorId = 40;
   }
 
-
-  
   public final class ShooterConstants {
     /*  Shooter Constants */
 
@@ -102,6 +92,7 @@ public final class Constants {
     // Claw idle speed 
     public static final double kClawIdleSpeed = -0.25;
   }
+  
   public final class DriveBaseConstants {
 
     public static final double driveKP = 0.05; 
@@ -135,4 +126,5 @@ public final class Constants {
       
     
   }
+
 }
