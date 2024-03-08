@@ -2,11 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands;
+package frc.robot.commands.Autos;
 
-import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -19,13 +17,9 @@ public class ShootAuto extends Command {
   CommandXboxController m_operatorController;
   DriveBase m_DriveBase;
   Shooter m_Shooter;
+  
+  double m_setpoint;
 
-  Encoder m_rightEncoder;
-  Encoder m_leftEncoder;
-  TalonFX rightFrontMotor;
-  TalonFX rightBackMotor;
-  TalonFX leftFrontMotor;
-  TalonFX leftBackMotor;
   public ShootAuto() {
     // Use addRequirements() here to declare subsystem dependencies. 
   }
@@ -34,31 +28,20 @@ public class ShootAuto extends Command {
   @Override
   public void initialize() { 
         /*  Reset Encoder Counts */
-        m_leftEncoder.reset();
-        m_rightEncoder.reset();
+      m_DriveBase.resetEncoders();
   }
 
-  double setpoint = 0;
-
-  final double kP = 0;
-  final double kI = 0;
-  final double kD = 0;
-
-  PIDController pid = new PIDController(kP, kI, kD);
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     // Output Motors
-    /*  rightFrontMotor.set(pid.calculate(m_rightEncoder.getDistance(), setpoint));
-     rightFrontMotor.set(pid.calculate(m_rightEncoder.getDistance(), setpoint));*/
-    
+
      m_Shooter.scoreSpeaker();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pid.reset();
+ 
   }
 
   // Returns true when the command should end.
