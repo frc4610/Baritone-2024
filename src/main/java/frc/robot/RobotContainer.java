@@ -5,12 +5,16 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.ScoreSpeakerAndLeave;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Claw;
@@ -33,6 +37,7 @@ public class RobotContainer {
   private final Claw m_claw = new Claw();
 
   private final Command m_ScoreSpeakerAndLeaveCommand = new ScoreSpeakerAndLeave(m_driveBase, m_Shooter);
+  private final Command m_DriveDistanceCommand = new DriveDistance(36, 0.25, m_driveBase);
 
   /* ---Controllers--- */
 
@@ -44,11 +49,30 @@ public class RobotContainer {
   private final CommandXboxController m_operatorController = 
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
+      private SendableChooser<String> AutoSelector;
+      public ShuffleboardTab Autos;
+
+      public static final String DriveDistance = "Go Backwards";
+      public static final String ScoreSpeakerAndLeave = "Score Speaker and Leave";
+      public static final String Score = "Score Speaker";
+
+      private String Selected;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     // Configure the trigger bindings
   configureBindings();
+
+  AutoSelector = new SendableChooser<String>();
+  Autos = Shuffleboard.getTab("Auto ");
+
+
+  AutoSelector.addOption("Score Speaker and Leave", ScoreSpeakerAndLeave);
+  AutoSelector.addOption("Go Backwards", DriveDistance);
+  AutoSelector.addOption("Score Speaker", Score);
+
+  Autos.add("Auto Selector", AutoSelector).withPosition(2, 0).withSize(6, 4);
  }
 
   /**
@@ -109,7 +133,21 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return m_ScoreSpeakerAndLeaveCommand;
-  }
+
+      
+if(AutoSelector.getSelected() == DriveDistance){
+
+  return m_DriveDistanceCommand;
+}
+
+else if(AutoSelector.getSelected() == ScoreSpeakerAndLeave){
+
+  return m_ScoreSpeakerAndLeaveCommand;
+} 
+
+else {
+  
+  return Commands.runOnce(() -> m_Shooter.scoreSpeaker(), m_Shooter);
+}
+}
 }
